@@ -28,26 +28,39 @@ impl Freq {
     }
 }
 
-impl Iterator for Freq {
+pub struct FreqIterator<'a> {
+    freq: &'a mut Freq,
+}
+
+impl<'a> Iterator for FreqIterator<'a> {
     type Item = i32;
 
     fn next(&mut self) -> Option<Self::Item> {
-        let current_item = self.shift_list[self.current_index];
-        let new_change = self.current_delta + current_item;
-        if self.change_set.insert(new_change) {
-            self.inc_index();
+        let current_item = self.freq.shift_list[self.freq.current_index];
+        let new_change = self.freq.current_delta + current_item;
+        println!(
+            "{} + {} = {}",
+            self.freq.current_delta, current_item, new_change
+        );
+        if self.freq.change_set.insert(new_change) {
+            self.freq.current_delta = new_change;
+            self.freq.inc_index();
             Some(current_item)
         } else {
-            self.repeat = Some(new_change);
+            self.freq.repeat = Some(new_change);
             None
         }
     }
 }
 
-// impl IntoIterator for &mut Freq {
-//     type Item = &i32;
-//     type IntoIter = ;
-// }
+impl<'a> IntoIterator for &'a mut Freq {
+    type Item = i32;
+    type IntoIter = FreqIterator<'a>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        FreqIterator { freq: self }
+    }
+}
 
 #[cfg(test)]
 mod tests {
@@ -57,7 +70,7 @@ mod tests {
     fn test1() {
         let v = vec![1, -2, 3, 1];
         let mut freq = Freq::new(v);
-        for _ in freq {}
+        for _ in &mut freq {}
         assert_eq!(freq.repeat, Some(2))
     }
 }
