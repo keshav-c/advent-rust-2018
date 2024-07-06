@@ -8,8 +8,8 @@ pub fn read_input(path: &str) -> Vec<String> {
     input.lines().map(|l| l.to_owned()).collect()
 }
 
-pub fn calc_checksum(box_ids: Vec<String>) -> i32 {
-    let boxes = box_ids.into_iter().map(|id| FabricBox::from(id));
+pub fn calc_checksum(box_ids: &Vec<String>) -> i32 {
+    let boxes = box_ids.into_iter().map(|id| FabricBox::from(id.to_owned()));
     let mut counts = Counts::new();
     for fb in boxes {
         if fb.twice {
@@ -47,7 +47,7 @@ mod tests {
     #[test]
     fn test_sample() {
         let input = read_input("sample.txt");
-        let checksum = calc_checksum(input);
+        let checksum = calc_checksum(&input);
         assert_eq!(checksum, 12)
     }
 }

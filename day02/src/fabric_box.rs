@@ -1,4 +1,6 @@
 use std::collections::HashMap;
+use std::iter;
+use std::str::Chars;
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct FabricBox {
@@ -24,6 +26,32 @@ impl FabricBox {
             twice: has_count(&counts, 2),
             thrice: has_count(&counts, 3),
         }
+    }
+
+    pub fn has_similar_id(&self, other: &FabricBox) -> Result<String, ()> {
+        let mut unmatched_chars = 0;
+        let mut matched_chars = String::new();
+        for (x, y) in iter::zip(self, other) {
+            if x != y {
+                unmatched_chars += 1
+            } else {
+                matched_chars.push(x)
+            }
+        }
+        if unmatched_chars == 1 {
+            Ok(matched_chars)
+        } else {
+            Err(())
+        }
+    }
+}
+
+impl<'a> IntoIterator for &'a FabricBox {
+    type Item = char;
+    type IntoIter = Chars<'a>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.id.chars()
     }
 }
 
@@ -134,5 +162,26 @@ mod tests {
                 thrice: false
             }
         )
+    }
+
+    #[test]
+    fn test_similar_id() {
+        let b1 = FabricBox {
+            id: String::from("fghij"),
+            twice: true,
+            thrice: true,
+        };
+        let b2 = FabricBox {
+            id: String::from("fguij"),
+            twice: true,
+            thrice: true,
+        };
+        assert_eq!(b1.has_similar_id(&b2), Ok("fgij".into()));
+        let b3 = FabricBox {
+            id: String::from("fguie"),
+            twice: true,
+            thrice: true,
+        };
+        assert_eq!(b1.has_similar_id(&b3), Err(()));
     }
 }
