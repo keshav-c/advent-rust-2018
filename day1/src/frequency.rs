@@ -12,6 +12,15 @@ impl Freq {
             repeat: None,
         }
     }
+
+    pub fn repeating_delta(&mut self) -> i32 {
+        self.compute_repeating_delta();
+        self.repeat.unwrap()
+    }
+
+    fn compute_repeating_delta(&mut self) {
+        for _ in self {}
+    }
 }
 
 pub struct FreqIterator<'a> {
@@ -101,9 +110,15 @@ mod tests {
 
     #[test]
     fn test5() {
-        let v = vec![7, 7, -2, -7, -4];
-        let mut freq = Freq::new(v);
-        for _ in &mut freq {}
-        assert_eq!(freq.repeat, Some(14))
+        let mut freq = Freq::new(vec![7, 7, -2, -7, -4]);
+        let result = &mut freq.repeating_delta();
+        assert_eq!(*result, 14)
+    }
+
+    #[test]
+    fn test6() {
+        let mut freq = Freq::new(vec![-24, 12, 10, 5]);
+        let result = &mut freq.repeating_delta();
+        assert_eq!(*result, -12)
     }
 }
