@@ -1,5 +1,4 @@
 mod fabric_box;
-// use std::collections::HashMap;
 use fabric_box::FabricBox;
 use std::fs;
 
@@ -19,6 +18,20 @@ pub fn calc_checksum(boxes: &Vec<FabricBox>) -> i32 {
         }
     }
     counts.hash()
+}
+
+pub fn find_the_common_id(boxes: &Vec<FabricBox>) -> Result<String, ()> {
+    for (i, b) in boxes.iter().enumerate() {
+        if i == boxes.len() - 1 {
+            return Err(());
+        }
+        for other_b in &boxes[(i + 1)..] {
+            if let Ok(matched_str) = b.has_similar_id(other_b) {
+                return Ok(matched_str);
+            }
+        }
+    }
+    Err(())
 }
 
 struct Counts {
@@ -44,9 +57,16 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_sample() {
-        let input = read_input("sample.txt");
+    fn test_sample_checksum() {
+        let input = read_input("sample1.txt");
         let checksum = calc_checksum(&input);
         assert_eq!(checksum, 12)
+    }
+
+    #[test]
+    fn test_sample_common_id() {
+        let input = read_input("sample2.txt");
+        let common_chars = find_the_common_id(&input).unwrap();
+        assert_eq!(common_chars, String::from("fgij"));
     }
 }
