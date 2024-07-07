@@ -3,13 +3,12 @@ mod fabric_box;
 use fabric_box::FabricBox;
 use std::fs;
 
-pub fn read_input(path: &str) -> Vec<String> {
+pub fn read_input(path: &str) -> Vec<FabricBox> {
     let input = fs::read_to_string(path).unwrap();
-    input.lines().map(|l| l.to_owned()).collect()
+    input.lines().map(|id| id.into()).collect()
 }
 
-pub fn calc_checksum(box_ids: &Vec<String>) -> i32 {
-    let boxes = box_ids.into_iter().map(|id| FabricBox::from(id.to_owned()));
+pub fn calc_checksum(boxes: &Vec<FabricBox>) -> i32 {
     let mut counts = Counts::new();
     for fb in boxes {
         if fb.twice {

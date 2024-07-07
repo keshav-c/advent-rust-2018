@@ -9,9 +9,9 @@ pub struct FabricBox {
     pub thrice: bool,
 }
 
-impl From<String> for FabricBox {
-    fn from(value: String) -> Self {
-        FabricBox::new(value)
+impl From<&str> for FabricBox {
+    fn from(value: &str) -> Self {
+        FabricBox::new(value.to_owned())
     }
 }
 
@@ -68,12 +68,11 @@ mod tests {
 
     #[test]
     fn test_counting1() {
-        let input = String::from("ababab");
-        let b = FabricBox::from(input.clone());
+        let b = FabricBox::from("ababab");
         assert_eq!(
             b,
             FabricBox {
-                id: input,
+                id: String::from("ababab"),
                 twice: false,
                 thrice: true
             }
@@ -82,12 +81,11 @@ mod tests {
 
     #[test]
     fn test_counting2() {
-        let input = String::from("abcdee");
-        let b = FabricBox::from(input.clone());
+        let b = FabricBox::from("abcdee");
         assert_eq!(
             b,
             FabricBox {
-                id: input,
+                id: String::from("abcdee"),
                 twice: true,
                 thrice: false
             }
@@ -96,12 +94,11 @@ mod tests {
 
     #[test]
     fn test_counting3() {
-        let input = String::from("abcdef");
-        let b = FabricBox::from(input.clone());
+        let b = FabricBox::from("abcdef");
         assert_eq!(
             b,
             FabricBox {
-                id: input,
+                id: String::from("abcdef"),
                 twice: false,
                 thrice: false
             }
@@ -110,12 +107,11 @@ mod tests {
 
     #[test]
     fn test_counting4() {
-        let input = String::from("bababc");
-        let b = FabricBox::from(input.clone());
+        let b = FabricBox::from("bababc");
         assert_eq!(
             b,
             FabricBox {
-                id: input,
+                id: String::from("bababc"),
                 twice: true,
                 thrice: true
             }
@@ -124,12 +120,11 @@ mod tests {
 
     #[test]
     fn test_counting5() {
-        let input = String::from("abbcde");
-        let b = FabricBox::from(input.clone());
+        let b = FabricBox::from("abbcde");
         assert_eq!(
             b,
             FabricBox {
-                id: input,
+                id: String::from("abbcde"),
                 twice: true,
                 thrice: false
             }
@@ -138,12 +133,11 @@ mod tests {
 
     #[test]
     fn test_counting6() {
-        let input = String::from("abcccd");
-        let b = FabricBox::from(input.clone());
+        let b = FabricBox::from("abcccd");
         assert_eq!(
             b,
             FabricBox {
-                id: input,
+                id: String::from("abcccd"),
                 twice: false,
                 thrice: true
             }
@@ -152,12 +146,11 @@ mod tests {
 
     #[test]
     fn test_counting7() {
-        let input = String::from("aabcdd");
-        let b = FabricBox::from(input.clone());
+        let b = FabricBox::from("aabcdd");
         assert_eq!(
             b,
             FabricBox {
-                id: input,
+                id: String::from("aabcdd"),
                 twice: true,
                 thrice: false
             }
