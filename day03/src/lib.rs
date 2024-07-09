@@ -10,10 +10,11 @@ fn read_input(path: &str) -> Vec<Claim> {
     input
         .lines()
         .map(|l| Claim::try_from(l))
-        .filter_map(|r| match r {
+        .enumerate()
+        .filter_map(|(i, r)| match r {
             Ok(claim) => Some(claim),
             Err(message) => {
-                eprintln!("{}", message);
+                eprintln!("Error in line {}: {}", i + 1, message);
                 None
             }
         })
