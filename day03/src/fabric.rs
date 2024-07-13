@@ -44,6 +44,23 @@ impl<'a> Fabric<'a> {
         }
         area
     }
+
+    pub fn uncontested_claims(&self) -> Vec<String> {
+        let mut non_overlapping_area: HashMap<&Claim, i32> = HashMap::new();
+        for claims in self.claims.values() {
+            if claims.len() == 1 {
+                let sole_claim = claims.first().unwrap();
+                non_overlapping_area
+                    .entry(sole_claim)
+                    .and_modify(|l| *l += 1)
+                    .or_insert(1);
+            }
+        }
+        non_overlapping_area
+            .iter()
+            .filter_map(|(c, a)| if c.area() == *a { Some(c.id()) } else { None })
+            .collect()
+    }
 }
 
 #[cfg(test)]

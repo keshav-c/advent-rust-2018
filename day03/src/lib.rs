@@ -21,12 +21,20 @@ pub fn read_input(path: &str) -> Vec<Claim> {
         .collect()
 }
 
-pub fn run1(claims: &Vec<Claim>) -> i32 {
+pub fn process_claim(claims: &Vec<Claim>) -> Fabric {
     let mut fabric = Fabric::new();
     for claim in claims.iter() {
         fabric.process_claim(&claim);
     }
+    fabric
+}
+
+pub fn run1(fabric: &Fabric) -> i32 {
     fabric.count_overlapping_cells()
+}
+
+pub fn run2(fabric: &Fabric) -> Vec<String> {
+    fabric.uncontested_claims()
 }
 
 #[cfg(test)]
@@ -45,10 +53,19 @@ mod tests {
     }
 
     #[test]
-    fn test_sample_process() {
+    fn test_sample_unclaimed_area() {
         let claims = read_input("sample.txt");
-        let overlapped_area = run1(&claims);
+        let fabric = process_claim(&claims);
+        let overlapped_area = run1(&fabric);
         assert_eq!(overlapped_area, 4);
+    }
+
+    #[test]
+    fn test_sample_uncontested_claim() {
+        let claims = read_input("sample.txt");
+        let fabric = process_claim(&claims);
+        let uncontested_claims = run2(&fabric);
+        assert_eq!(uncontested_claims, vec![String::from("3")]);
     }
 
     #[test]

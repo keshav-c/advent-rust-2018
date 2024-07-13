@@ -4,7 +4,7 @@ use crate::fabric::Coordinates;
 use once_cell::sync::Lazy;
 use regex::Regex;
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Hash)]
 pub struct Claim {
     id: String,
     pub coordinates: Coordinates,
@@ -23,6 +23,10 @@ impl Claim {
         }
     }
 
+    pub fn id(&self) -> String {
+        self.id.clone()
+    }
+
     pub fn x_range(&self) -> Range<i32> {
         let Coordinates(x, _) = self.coordinates;
         Range {
@@ -37,6 +41,10 @@ impl Claim {
             start: y,
             end: y + self.height,
         }
+    }
+
+    pub fn area(&self) -> i32 {
+        self.height * self.width
     }
 }
 
