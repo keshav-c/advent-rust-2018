@@ -21,8 +21,7 @@ pub fn read_input(path: &str) -> Vec<Claim> {
         .collect()
 }
 
-pub fn run1(path: &str) -> i32 {
-    let claims = read_input(path);
+pub fn run1(claims: &Vec<Claim>) -> i32 {
     let mut fabric = Fabric::new();
     for claim in claims.iter() {
         fabric.process_claim(&claim);
@@ -47,7 +46,8 @@ mod tests {
 
     #[test]
     fn test_sample_process() {
-        let overlapped_area = run1("sample.txt");
+        let claims = read_input("sample.txt");
+        let overlapped_area = run1(&claims);
         assert_eq!(overlapped_area, 4);
     }
 
